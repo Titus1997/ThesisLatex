@@ -1,0 +1,99 @@
+\documentclass[../Thesis.tex]{subfiles}
+\begin{document}
+ 
+\section  {Approach}
+\subsection {Considered Approaches}
+
+A first approach to blind signal source separation is using what is known as Independent Component Analysis (ICA). This assumes each source signal is statistically independent, also known as the nonGaussianity of the source. ICA exploits this property and uses different finite impulse response (FIR) filters to separate the signals. This method seems ideal for separating noise, but proved to be impractical for separating sound recorded in a real acoustic room environment.
+
+A Deep Learning approach using the latest advances in Convolutional Neural Networks (CNNs) is also possible. The main idea is modelling a CNN to compute a time-frequency soft mask which we apply to the initial signal. Such a CNN is theorized in \cite{pritish} . The network has 2 phases: an encoding or convolutional one and a decoding or deconvolution one. The encoding consists of 3 convolution layers: a vertical one (that can recognize things such as timbre), a horizontal one (to learn temporal pattern and evolutions) and a fully connected one that can learn to classify different features. The decoding stage is all about reversing the previous convolutions. Such a algorithm was implemented and submitted to the MIREX2016 where it achieved one of the best results. Although a solid approach to our blind audio separation problem, the seeming difficulty of implementing the algorithm makes it our second choice.  
+
+
+\subsection {Selected Approach}
+
+The chosen approach is similar to the previously discussed, but instead of using the CNN model, we went with the LSTM RNN architecture, which we already found to be superior for processing sequential data and keep long time-lag dependencies. The network will be given as input the frequency spectrum, instead of the raw waveform. The RNN will ideally find patterns for recognizing our desired source using the LSTM cells. It will next filter the signal through a time-frequency masking layer and give as output two waveforms that combined should give the initial signal (audio). 
+
+To create an interface for an everyday user, two Graphical User Interfaces will be created: first for the mobile environment using Flutter and the other as a web application using React. Our algorithm will be stationed on a server machine.  A RESTful service will be created using Flask so that the GUIs can interact with the server.
+
+
+\section  {Technology}
+\subsection {Python}
+
+\begin{wrapfigure}{l}{0.3\textwidth}
+\label {fig: python}
+\includegraphics[width=0.3\textwidth]{py.png}
+\end{wrapfigure}
+Python is currently the most used programming language in machine learning. Python has an expressive syntax, that makes code easy to understand and maintain. Considering it is a high-level language, Python can still compare in speed with some of low-level programming languages. However, what really sells it to be used as a machine learning language is the great number of open source libraries and frameworks available. Libraries like NumPy can speed up calculations, and frameworks such as TensorFlow can help develop and train machine learning models, while keeping the clean syntax and structure of the program.
+
+I personally chose Python because I was already familiar with it, and knew there is a lot of support for it online. For this project it seemed like the perfect fit, with existing libraries for audio files processing, modelling a neural network and learning it, and even developing a RESTful service.
+
+
+\subsection {Tensorflow}
+
+\begin{wrapfigure}{l}{0.3\textwidth}
+\label {fig: tensorflow}
+\includegraphics[width=0.3\textwidth]{tf.png}
+\end{wrapfigure}
+TensorFlow is an open source framework, used specifically for designing ML models and doing numerical computations inside them. TensorFlow received a lot of attention ever since its release, mostly because of its extensibility and hardware utilization. Its performance was not competitive with other ML libraries, but it has improved since considerably. The parts of TensorFlow that we are interested in are the TensorFlow library for Python and the TensorBoard toolkit for data visualization.  
+
+For our software, TensorFlow can help us create the model of the network, by simply specifying each layer type, activation function, size and every other parameter we need. We can add multiple layers of LSTMs in just two lines of code. After we have created our model, we can use this library to help us with training the network. We can easily arrange the data into batches, compute the loss and backpropagate it. TensorFlow will help us develop a well-structured program, with improved performance because of the efficient functions it provides.
+
+TensorBoard is a toolkit for visualizing our data. During the execution of the program, information on the model, dataset, training and evaluation are logged into files. TensorBoard can next interpret these files and provide us with an elegant web interface to visualize this data.  For example, we can see if the model was created as intended, or if the training is going as planned.
+
+\subsection {Flask}
+
+\begin{wrapfigure}{l}{0.25\textwidth}
+\label {fig: flask}
+\includegraphics[width=0.25\textwidth]{flask.png}
+\end{wrapfigure}
+Flask is a small framework for Python that does not require any additional library or tool. The framework contains development server and debugger and RESTful request dispatching. We are mainly interested in these two features as our main goal is to create a simple RESTful service that can communicate with our neural network. Flask is well known for its simplicity and lightweight design. This and the fact that it is a Python framework persuade me to use it for the server communication.
+
+\subsection {UI Frameworks}
+\subsubsection {Flutter}
+
+\begin{wrapfigure}{l}{0.22\textwidth}
+\label {fig: flutter}
+\includegraphics[width=0.22\textwidth]{flutter.png}
+\end{wrapfigure}
+Flutter is a cross-platform framework released by Google in 2016. The framework was created to help developers make high-performance mobile applications that can run both on Android and iOS. Fluter applications are written in Dart, a programming language also implemented by Google, which has some similarities to JavaScript. Flutter has a rendering engine that renders every view component, and can compile an application with the same high-performance as that of a native application.
+
+Flutter was chosen for implementing our mobile GUI because of its consistency and tidiness in syntax along with the fact that the application can run on both Android and iOS. The design of the mobile application will be simple consisting of a few views and buttons. The library http form dart will help us communicate with the server through http calls.
+
+
+\subsubsection {React}
+
+\begin{wrapfigure}{l}{0.22\textwidth}
+\label {fig: react}
+\includegraphics[width=0.22\textwidth]{react.png}
+\end{wrapfigure}
+React is a JavaScript Library that makes creating interactive UIs a lot easier. Features like virtual DOMs and stateful component make sure that only the components we change get rendered again. The only real drawback of using React is the high memory (RAM) requirement. In our case, this will be practically inexistent, as our application will be a simple, low resource one. 
+
+React is perfect for building a single page web application, which is what we are going to do.
+The design of our web application will be similar to the mobile design. A few views so we can choose what service we require and a upload screen along with a audio player or a download button will probably get implemented.
+
+\subsection {Other Third-party Libraries}
+
+\textbf{NumPy} comes from Numerical Python. It is considered the fundamental Python package for scientific computing. NumPy provides lots of tools for multi-dimensional arrays and functions to perform complex calculation. The speed drawback of python being a high-level language is mostly resolved by this package.
+NumPy will prove its usefulness when we are working with arrays such as the waveforms or spectrograms. Other mathematical functions will be used during the implementation.  The speed difference gained by using this library will be visible especially during the training of the neural network. Training such a model is usually a process that takes a lot of time so any performance gain is very helpful. 
+
+\textbf{Librosa} is another python package, this one specializing in audio analysis. It is usually used to develop Music Information Retrieval (MIR) systems. Librosa will provide us with simple methods for reading and writing audio files in formats such as wav and mp3. This package also comes with a great implementation of the short-time Fourier transform. We will use it to obtain the spectrograms of the input signals. Functions to reverse these processes are also available in this package.  Overall, Librosa is a great tool that will reduce the implementation time and our application performance significantly.
+
+
+\section  {Data}
+\subsection {Selection}
+
+Multiple datasets related to audio source separation are published and available on the world, though few of them fit the requirements for our specific need. Finding professional recordings of songs, along with independent recordings for each musical instrument proved to be harder than expected task. 
+
+The dataset chosen to work with is INRA:DSD100 a collection of 100 songs. For each song the mixture audio is provided, and the composing sources audio labeled as: vocals, bass, drums, other. The songs are professionally recorded with each source being totally isolated. The only problem that this dataset presents is the low number of samples. To work around this, we can augment the data like we mentioned previously. This can be done by adding some noise to each mixture, or by combining two songs together, resulting in a totally different mixture. For example we could use the waveform of the vocals in one song and combine it with the drums and bass from another song.
+
+
+\subsection {Preprocessing}
+
+An experiment where we will only use mixtures of two sources will eb conducted. This requires forming another mixture for each song using only the two recording (for example only combining the vocals and the drums). This will require reading the two wav files and summing the waveforms. The result will be saved in another wav file. Using the methods provided by Librosa this will be a relatively easy task.
+
+Preprocessing of the training and evaluation data consists of retrieving the waveform from the wav file, and using the STFT formula to obtain the phase and the magnitude spectra. We will only use the magnitude spectra for further computations. The phase spectra will remain in memory as we need it to reconstruct the altered waveform.
+
+After our neural network is trained, our software will receive as input an mp3 format audio. This will need to be converted to the corresponding waveform which will pass through the filters mentioned above. In the evaluation phase, some additional processing might occur in order to calculate the neural networks performance.
+
+
+\end{document}

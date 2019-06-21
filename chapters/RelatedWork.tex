@@ -1,0 +1,41 @@
+\documentclass[../Thesis.tex]{subfiles}
+ 
+\begin{document}
+ 
+\section {Source Separation}
+Source separation in a digital audio is the isolation or extraction of a signal component from a mixture of signal components. Musical recordings are being recorded with several microphones, one for each source. These sources are then mixed together to form the song (final mixture). We can consider this final mixture as a sum of all sources, with the mixing filters applied to them. To represent this in a mathematical way:
+
+\[ \mathit{x}_\mathit{i} (\mathit{t})
+= \sum_{\mathit{j} = 1}^{\mathit{J}} \sum_{\tau = - \infty}^{\infty} \mathit{a}_{\mathit{ij}} (\mathit{t} - \tau, \tau) \mathit{s}_{\mathit{j}} ( \mathit{t} - \tau ) \]
+ 
+$\mathit{x}_\mathit{i} (t)$ – final mixture,
+
+$\mathit{s}_\mathit{j}$ - source, 
+
+$\mathit{a}_\mathit{ij}$ – filter, 
+
+$\mathit{J}$ – number of sources.
+
+
+If the filters are linear, the final mix will also be linear. If, however, we add other mixing effects to the song, it will no longer be a linear sum of those sources. Keeping this in mind, we can categorize the mixture by the way it was recorded as follows:
+
+a)	Under-determined/Over-determined based on the microphones that were used. Using a microphone to catch all sound sources will result in an under-determined mixture, while using a microphone for each source will get you an over-determined mixture.
+
+b)	Time-varying/Time-invariant depending on the static aspect of the song.
+
+c)	Convoluted/Instantaneous depends on the post-production effects
+
+Source separation algorithms can also be categorized into two:
+
+a)	Informed source separation takes advantage of additional data regarding the signals. An example is a MIDI representation of the music.
+
+b)	Blind source separation is about extracting components with no extra information about them. It can be done by taking advantage of the statistical independence of each source signal. In this category the deep learning algorithms are explored and improved. We can include here the work of Lopez P.: Blind Source Separation of Audio Signals Using Independent Component Analysis and Wavelets
+
+\section {Vocal Isolation}
+Vocal isolation is a useful tool to get a clean vocal signal, which can furthermore be used for tasks such as singer identification or lyrics transcription. Various methods and algorithms have been created to try and develop a vocal isolation software. Successful results have been achieved with Bayesian methods, and non-negative matrix factorization. Recently, more powerful alternatives have emerged from the field of machine learning, more specifically deep learning.
+
+According to \cite{jan} the decomposition of a (music) audio signal into its vocal and background track is analogous to image-to image translation, where a mixed spectrogram is transformed into its constituent sources. Convolutional encoders and decoders have been researched because of this. They rely on spectrograms to be compressed, analyzed, filtered and decompressed. This technique has a major weakness regarding the amount of training data required. A sufficiently large dataset is not publicly available.
+
+Some breakthroughs were made when U-net architecture was used. Because in the visual field, a few pixels don’t carry as important information as a pixel in a spectrogram does, it is crucial that the reproduction preserves a high level of detail. More details on the algorithms can be found in \cite{jan}.
+
+\end{document}

@@ -1,0 +1,73 @@
+%% -------------------------
+%% Thesis.tex -main
+%% -------------------------
+
+\documentclass[a4paper, 10pt, oneside]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{subfiles}
+\usepackage{wrapfig}
+\usepackage{cite}
+\graphicspath{ {images/} }
+
+%% --------------------------
+
+\author {Trifon Titus-Traian}
+
+\date {07.06.2019}
+
+%% ---------------------------
+\begin {document}
+
+\begin{titlepage}
+	\centering
+	\includegraphics[width=0.15\textwidth]{logo.png}\par\vspace{1cm}
+	{\scshape\LARGE Babes-Bolyiai University Cluj-Napoca \par}
+	
+	{\scshape\LARGE Faculty of Mathematics and Computer Science \par}
+	
+	{\scshape\LARGE Specialization Computer Science \par}
+	\vspace{1cm}
+	{\scshape\Large Diploma Thesis\par}
+	\vspace{1.5cm}
+	{\huge\bfseries Audio Separation using Deep Learning\par}
+	\vspace{2cm}
+	{\Large\itshape Titus-Traian Trifon\par}
+	\vfill
+	supervised by\par
+	Tudor Mihoc
+
+	\vfill
+
+% Bottom of the page
+	{\large \today\par}
+\end{titlepage}
+
+\tableofcontents
+
+\nocite{*}
+\chapter{Introduction}
+\subfile{chapters/Introduction}
+ 
+\chapter{Theory}
+\subfile{chapters/Theory}
+ 
+\chapter{Related Work}
+\subfile{chapters/RelatedWork}
+ 
+\chapter{Methodology}
+\subfile{chapters/Methodology}
+ 
+\chapter{Implementation}
+\subfile{chapters/Implementation}
+ 
+\chapter{Conclusion}
+\subfile{chapters/Conclusion}
+
+
+\bibliography{references}{}
+\bibliographystyle{plain}
+
+%% ------------------------------
+\end{document}
+%% ------------------------------
