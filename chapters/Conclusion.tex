@@ -2,16 +2,24 @@
  
 \begin{document}
 \section {Results}
-..
+
+The aim of this thesis was to develop a reasonable program that can separate instruments from a song, and also provide a platform and an interface so that regular users easily utilize this software. For the most part, we achieved what we have proposed. The application can separate from a mixture of drums and vocals the two different sources. Due to time constraints, the model and hyperparameters were not perfectly tuned. This resulted in difficult training of the network and suboptimal results. Even if the separation seems lousy in some instances, the statistics assure us that the model is learning and improving consistently. 
+
+As for the mobile and web user interfaces, they are working as intended. The users can easily access the separation software. Both the mobile and the web applications have a modern, easy to use design. In the same time, their structure is scalable.
+The REST API is simple but efficient. It can successfully store the provided audio file, give it as input to the model, and after that return the output audio to the user. 
+
 
 \section {Discussion}
-..
+
+This thesis provided a subjective and very specific look at the audio blind separation problem. There is currently no implementation of a software that can separate a musical source without noticing the error. Our attempt was therefore a valiant effort in solving this problem.
+
+Even so, our model did not perform as well as expected, presumably because of insufficient training. Our software and network were designed in their simplest form. Of course, a better model, specific for our task, could be conceptualized. Other systems such as stacked hourglass networks could be explored. This specific architecture presented at last year’s ISMIR Conference showed promising results in this field.
 
 \section {Future Work}
 
 Our software, obviously has not yet reached its potential. There is a lot of room for improvement, mainly by optimizing the model and training it with more data. A more substantial dataset needs to be found or composed. The architecture of the LSTM RNN can also be updated to gain better results. Even so, our initial goal has not been fully achieved. We are still to train our model for recognizing and separating more instruments. This is a deficient that came mostly from the lack of data available.
 
-Assuming the software produces professional results, a lot of doors open for future developments. This software can be a gateway to other applications such as converting the audio to a midi format, and further transpose it to a music sheet. Another similar network can be taught to recognize chords or beats from the audio. One more software I would personally be interested in is an automatic piano tutorial of the song. After gaining the individual audio of the piano, we could separate the individual notes by analyzing the magnitude spectra and recognize which notes are being played at a given time. 
+Assuming the software produces professional results, a lot of doors open for future developments. This software can be a gateway to other applications such as converting the audio to a midi format, and further transpose it to a music sheet. Another similar network can be taught to recognize chords or beats from the audio. One more software I would personally be interested in is an automatic piano tutorial of the song. After gaining the isolated audio of the piano, we could separate the individual notes by analyzing the magnitude spectra and recognize which notes are being played at a given time. 
 
 If further improved, this software will pave the way for numerous MIR algorithms and applications. Assuming that it is optimized to give faultless results, it would be a true landmark for audio signal processing and deep learning in general.
 
