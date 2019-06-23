@@ -78,7 +78,7 @@ An Artificial Neural Network (ANN) can be described as a weighted directed graph
 \centering
 \label {fig: ann}
 \includegraphics[width=0.5\textwidth]{ann.png}
-\caption[width=0.5\textwidth]{Abstract representaion of a feed-forward ANN}
+\caption[width=0.5\textwidth]{Abstract representation of a feed-forward ANN}
 \end{figure}
 
 The first model of an artificial neuron was proposed by Walter Pitts and MuCulloch in 1943. This neuron computes a weighted sum of its inputs and generates an output of 1 if the sum is above a threshold, or 0 otherwise. 
@@ -105,7 +105,7 @@ As mentioned before, Recurrent Neural Networks (RNNs) are a class of dynamic mod
 \caption[width=0.5\textwidth]{Deep RNN (prediction) architecture}
 \end{figure}
 
-Training RNNs proved to be a difficult task, as the backpropagated gradients tend to get either too big, or too small from a step to another, making some data be irrelevant or quite to opposite. These problems are referred to as the vanishing gradient and the exploding gradient, the first one being the more encountered of the two.
+Training RNNs proved to be a difficult task, as the backpropagated gradients tend to get either too big, or too small from a step to another, making some data be irrelevant or quite the opposite. These problems are referred to as the vanishing gradient and the exploding gradient, the first one being the more encountered of the two.
 
 RNNs are being used to generate sequences in various domains such as music, text processing and even motion capture data. This dynamic model looks like a promising approach to our audio separation task, giving that we take care of the vanishing gradient.
 
@@ -149,7 +149,7 @@ In regular deep networks, dropout is the most common technique for reducing over
 
 \subsection {Optimization}
 
-The success of the Neural Network resides mostly in optimizing and fine tuning the model for your specific task. Let’s further talk about some factors that influence our model’s performance.
+The success of the Neural Network resides mostly in optimizing and fine-tuning the model for your specific task. Let’s further talk about some factors that influence our model’s performance.
 
 First, just having a training dataset is not enough. The data must be correct and diverse so that the model can distinguish important features. A correlation between the quantity of data and the size of the neural network is also important to prevent overfitting and underfitting. To help the model find features in our data, we can use different preprocess techniques. In our case, instead of feeding the waveform into the network, we will first transform it using STFT and only give the magnitude spectra as input.
 

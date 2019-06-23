@@ -4,7 +4,11 @@
  
 \section  {Preprocessing}
 \subsection {Audio Decoding}
-..
+
+We are only going to work with two different audio formats: \texttt{.wav} (Waveform Audio File) and \texttt{.mp3} (MPEG-2 Audio Layer III). The wav files are used in training and evaluating the model, while the mp3 files are only used when received from the user, or to pass the resulting audio file back to the user.
+
+To decode both formats, we are using \texttt{open} and \texttt{load} functions provided by Librosa. The mp3 can be open and transformed into a waveform. The wav files are already stored as a waveform, so we only need to open the file and extract it. After we are done processing the waveform, we have to encode and save it to file. Fot this we have the \texttt{write\_wav} and \texttt{sf.write} function.
+
 
 \subsection {Data Preparation}
 
@@ -69,7 +73,7 @@ The output is the two predicted magnitude spectra for our two sources. In the tr
 
 To train our model, we load the model, with the latest state available. Next, we specify the loss method, and the optimizer. After some investigation on this matter, the Adam optimizer was chosen, an implementation being available on TensorFlow. After the initialization, we can start the training session.  Drums and vocals audio are chosen from a random song. From this, only a portion of configurable seconds will be processed. Using the preprocess techniques, we get the corresponding batches for the mixture and the two sources. We pass the loss function, optimizer and the batches to the method run of our current session. This method gets us the loss value, and backpropagates it through our model. In order to save the progress, we will use the checkpoint system implemented in TensorFlow. This lets us save the Variables and parameters of our model and restore them when we restart the software. 
 
-Currently 1000 training iterations are done in about 6 hours. Judging by how the loss value decreases, a satisfiable number of iterations would be around 15.000, which takes over 3 days on this hardware configuration. In order to tune the hyperparameters, multiple individual training session should run. Because of time issues we will research what values these parameters should have and personally observe how it affects our model. No special evaluations are to be done.
+Currently 1000 training iterations are done in about 6 hours. Judging by how the loss value decreases, a satisfying number of iterations would be around 15.000, which takes over 3 days on this hardware configuration. In order to tune the hyperparameters, multiple individual training session should run. Because of time issues we will research what values these parameters should have and personally observe how it affects our model. No special evaluations are to be done.
 
 \smallskip
 Current hardware configuration:
@@ -80,6 +84,8 @@ Physical Memory (RAM) & 8.00 GB  \\
 Graphic Card & GTX 1050 4 GB
 \end{tabular}
 
+\clearpage
+
 \begin{figure}[h]
 \centering
 \label {fig: loss}
@@ -88,12 +94,43 @@ Graphic Card & GTX 1050 4 GB
 \end{figure}
 
 \section {Rest API}
-..
+
+We implemented the REST API with the help of the Flask microframework. The service was written in the same project as the model. This ensures a quick and reliable communication between the two. 
+The server is configured to run on port 5000. Two routes were defined: \texttt{/drums} and \texttt{/vocals}. To receive the drums source, the client must make a Post request to \texttt{/drums} while providing the audio file to be processed under the name \texttt{file}. For receiving the vocals source a similar request is sent, but this time to the \texttt{/vocals} route.
+
+ The server methods that are linked to the two available routes are almost identical. They receive the audio file, and verify the file is the correct format. If it passes the check, the files are read and transformed into waveforms. The Flask framework procures the methods that are used for verifying and saving the file.  From this point on, this waveform passes through all the processes needed in order to be given to the model as input. After the model predicts the two different sources, the source requested by the user is transformed back into an audio file and sent back to the client as the response to the POST request.
+
+The structure of the service, as well as the flow of data is efficient and straight-forward. Different technologies could be used to create a REST API, but using Flask we managed to keep it in the same environment as the separation algorithm.
 
 \section {Mobile Interface}
-..
+
+The mobile interface was done in Flutter. It has a very similar structure to the web application. The Flutter framework relies on \texttt{Widgets} to display objects. These \texttt{Widgets} have a lot of similarities to the \texttt{Components} from React like being capable of storing information in a State, and only rendering the components that have changed. 
+
+The application has a single screen, that contains all the information and features we need. In the top of the screen is a file picker that lets us select the audio file. Information on this file is displayed making us certain that the correct file is loaded. Two command buttons are in the bottom half of the screen. Pressing each one will send the selected file to the server and wait for a response. If the server is working, the result audio file corresponding to our previous choice is received and saved to the mobile device. 
+
+For connecting with the REST API, we designed a Server Helper. Inside it we take advantage of the http package available in Dart to simply make the post requests. The selected audio is sent by these requests. The response from the server will contain an audio file. This file will be saved on the device, and the user will be informed of this action. 
+
+The application works on both Android and iOS. Slight differences can be seen when using the file picker. 
+
+\begin{figure}[h]
+\centering
+\label {fig: mobile}
+\includegraphics[width=0.5\textwidth]{mobilegui.png}
+\caption[width=0.5\textwidth]{screenshot of the current mobile app design}
+\end{figure}
 
 \section {Web Interface}
-..
+
+For the web-based user interface, we used React. Although we could have created a simple web-page using HTML and CSS, using React and making a solid structure makes expanding and refactoring it a lot easier. This current website can be transformed into a complex web application using the same technologies and source code. 
+
+Only the default route is currently accessible. Trying to go on any other route will give an \texttt{Error 404} Page. On this landing page we notice 3 buttons. The first one when pressed opens a file dialog that can select an audio file in \texttt{.wav} or \texttt{.mp3} format. This is the file that is send to the back-end. After selecting, pressing on one of the remaining two buttons will send a request tot the server. Pressing each one will send a POST request to the server, containing the selected audio file. The web application will wait for a response, which hopefully will contain the requested separated audio. The file will automatically download to the user’s machine. 
+A multitude of HTML (HyperText Markup Language) Elements are used to define the structure of the webpage. The \texttt{Input} element inside a \texttt{Form} is used to select the audio file and two \texttt{Button} elements are used to call the functions that send the POST requests. Every element is styled with CSS (Cascading Style Sheets) in order to give them a pleasant look. 
+
+\begin{figure}[h]
+\centering
+\label {fig: web}
+\includegraphics[width=0.5\textwidth]{webgui.png}
+\caption[width=0.5\textwidth]{screenshot of the current web page design}
+\end{figure}
 
 \end{document}
